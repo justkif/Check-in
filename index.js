@@ -6,6 +6,11 @@ const dotenv = require('dotenv');
 const app = express();
 dotenv.config();
 
+(async () => {
+    await mongoose.connect(`${process.env.MONGODB_URI}`)
+    .then(() => console.log('MongoDB Connected.'));
+})();
+
 app.use(cors());
 app.use(express.json());
 
