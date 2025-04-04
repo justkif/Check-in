@@ -6,7 +6,7 @@ const Runner = sequelize.define('Runner', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
-        defaultValue: sequelize.DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4
     },
     ordinalNumber: {
         type: DataTypes.STRING,
