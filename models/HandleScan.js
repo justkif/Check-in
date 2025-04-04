@@ -6,6 +6,8 @@ const HandleScan = sequelize.define('HandleScan', {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }    
+}, { 
+    timestamps: false 
 });
 
 module.exports = HandleScan;

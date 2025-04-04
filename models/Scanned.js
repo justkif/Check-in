@@ -16,6 +16,8 @@ const Scanned = sequelize.define('Scanned', {
         type: DataTypes.ARRAY(DataTypes.UUID),
         defaultValue: []
     }
+}, { 
+    timestamps: false 
 });
 
 module.exports = Scanned;

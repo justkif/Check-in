@@ -20,6 +20,8 @@ const User = sequelize.define('User', {
         type: DataTypes.ENUM('manager', 'scanner', 'runner'),
         defaultValue: 'runner'
     }
+}, { 
+    timestamps: false 
 });
 
 module.exports = User;

@@ -45,6 +45,8 @@ const Runner = sequelize.define('Runner', {
         type: DataTypes.STRING,
         allowNull: true
     }
+}, { 
+    timestamps: false 
 });
 
 module.exports = Runner;
