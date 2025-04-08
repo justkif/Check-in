@@ -73,7 +73,15 @@ module.exports = userController = {
     },
     updatePasswordManager: async(req, res) => {
         try {
-
+            const user = await User.findOneAndUpdate(
+                { username: req.body.username },
+                { password: await bcrypt.hash(req.body.newPassword, await bcrypt.genSalt(10)) }
+            );
+            if (!user) {
+                return res.status(404).json("User not found.");
+            }
+            const { password, _id, __v, ...data } = user.toObject();
+            res.status(200).json(data);
         } catch (err) {
             res.status(500).json(err);
         }
