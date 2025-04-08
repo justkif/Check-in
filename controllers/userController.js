@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Scan = require('../models/Scan');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -13,7 +14,8 @@ module.exports = userController = {
     },
     getScan: async(req, res) => {
         try {
-
+            const scan = await Scan.findOne().select('-_id');
+            res.status(200).json(scan);
         } catch (err) {
             res.status(500).json(err);
         }
