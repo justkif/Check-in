@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 module.exports = userController = {
     getAll: async(req, res) => {
@@ -25,7 +26,17 @@ module.exports = userController = {
     },
     registerUser: async(req, res) => {
         try {
-
+            const checkUser = await User.findOne({ username: req.body.username });
+            if (checkUser) {
+                return res.status(409).json('Username existed.'); 
+            }
+            const user = await new User({
+                username: req.body.username,
+                password: await bcrypt.hash(req.body.password, await bcrypt.genSalt(10))
+            });
+            await user.save();
+            const { password, _id, __v, ...data } = user.toObject();
+            res.status(201).json(data);
         } catch (err) {
             res.status(500).json(err);
         }
