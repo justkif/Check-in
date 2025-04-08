@@ -115,7 +115,13 @@ module.exports = userController = {
     },
     updateScan: async(req, res) => {
         try {
-
+            const currentScan = await Scan.findOne();
+            const scan = await Scan.findOneAndUpdate(
+                {},
+                { isScan: !currentScan.isScan },
+                { new: true }
+            );
+            res.status(200).json(scan.isScan);
         } catch (err) {
             res.status(500).json(err);
         }
