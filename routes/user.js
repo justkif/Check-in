@@ -10,7 +10,6 @@ router.post('/user/login', userController.loginUser);
 router.put('/user/passwordManager', jwtController.verifyManager, userController.updatePasswordManager);
 router.put('/user/password', jwtController.verifyRunner, userController.updatePassword);
 router.put('/user/role', jwtController.verifyManager, userController.updateRole);
-router.put('/user/reset', jwtController.verifyManager, userController.reset);
 router.put('/user/scan', jwtController.verifyManager, userController.updateScan);
 
 module.exports = router;

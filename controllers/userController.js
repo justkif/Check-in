@@ -92,13 +92,6 @@ module.exports = userController = {
             res.status(500).json(err);
         }
     },
-    reset: async(req, res) => {
-        try {
-
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    },
     updateScan: async(req, res) => {
         try {
 

@@ -33,5 +33,12 @@ module.exports = runnerController = {
         } catch (err) {
             res.status(500).json(err);
         }
+    },
+    reset: async(req, res) => {
+        try {
+            
+        } catch (err) {
+            res.status(500).json(err);
+        }
     }
 }
