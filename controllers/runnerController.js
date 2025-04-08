@@ -11,7 +11,11 @@ module.exports = runnerController = {
     },
     getOne: async(req, res) => {
         try {
-
+            const runner = await Runner.findById(req.params.runnerId).select('-_id');
+            if (!runner) {
+                res.status(404).json('Runner not found.');
+            }
+            res.status(200).json(runner);
         } catch (err) {
             res.status(500).json(err);
         }
