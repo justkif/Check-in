@@ -114,7 +114,19 @@ module.exports = userController = {
     },
     updateRole: async(req, res) => {
         try {
-
+            if (req.body.role == 'manager') {
+                return res.status(403).json('No admin permission');
+            }
+            const user = await User.findOneAndUpdate(
+                { username: req.body.username },
+                { role: req.body.role },
+                { new: true }
+            );
+            if (!user) {
+                return res.status(404).json('User not found.');
+            }
+            const { password, _id, __v, ...data } = user.toObject();
+            res.status(200).json(data);
         } catch (err) {
             res.status(500).json(err);
         }
