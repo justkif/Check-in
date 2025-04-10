@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Scan = require('../models/Scan');
+const Scanned = require('../models/Scanned');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -22,7 +23,12 @@ module.exports = userController = {
     },
     getScanned: async(req, res) => {
         try {
-
+            const decoded = jwt.verify(req.headers.token, process.env.JWT_KEY);
+            const scanned = await Scanned.findById(decoded.id).select('-_id -__v');
+            if (!scanned) {
+                return res.status(404).json('No scanned history.');
+            }
+            res.status(200).json(scanned);
         } catch (err) {
             res.status(500).json(err);
         }
