@@ -99,7 +99,7 @@ module.exports = userController = {
             res.status(500).json(err);
         }
     },
-    updatePasswordManager: async(req, res) => {
+    updatePasswordAdmin: async(req, res) => {
         try {
             const user = await User.findOneAndUpdate(
                 { username: req.body.username },
@@ -136,9 +136,6 @@ module.exports = userController = {
     },
     updateRole: async(req, res) => {
         try {
-            if (req.body.role == 'manager') {
-                return res.status(403).json('No admin permission');
-            }
             const user = await User.findOneAndUpdate(
                 { username: req.body.username },
                 { role: req.body.role },

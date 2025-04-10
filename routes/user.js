@@ -2,15 +2,15 @@ const router = require('express').Router();
 const userController = require('../controllers/userController');
 const jwtController = require('../controllers/jwtController');
 
-router.get('/user', jwtController.verifyManager, userController.getAll);
-router.get('/user/scan', jwtController.verifyManager, userController.getScan);
+router.get('/user', jwtController.verifyAdmin, userController.getAll);
+router.get('/user/scan', jwtController.verifyAdmin, userController.getScan);
 router.get('/user/scanned/:userId', jwtController.verifyScanner, userController.getScanned);
-router.post('/user', jwtController.verifyManager, userController.createAll);
-router.post('/user/register', jwtController.verifyManager, userController.registerUser);
+router.post('/user', jwtController.verifyAdmin, userController.createAll);
+router.post('/user/register', jwtController.verifyAdmin, userController.registerUser);
 router.post('/user/login', userController.loginUser);
-router.put('/user/passwordManager', jwtController.verifyManager, userController.updatePasswordManager);
+router.put('/user/passwordManager', jwtController.verifyAdmin, userController.updatePasswordAdmin);
 router.put('/user/password', jwtController.verifyRunner, userController.updatePassword);
-router.put('/user/role', jwtController.verifyManager, userController.updateRole);
-router.put('/user/scan', jwtController.verifyManager, userController.updateScan);
+router.put('/user/role', jwtController.verifyAdmin, userController.updateRole);
+router.put('/user/scan', jwtController.verifyAdmin, userController.updateScan);
 
 module.exports = router;

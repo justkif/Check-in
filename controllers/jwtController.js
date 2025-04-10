@@ -17,7 +17,7 @@ module.exports = jwtController = {
     },
     verifyScanner: async(req, res, next) => {
         jwtController.verifyRunner(req, res, () => {
-            if (req.user && (req.user.role == 'scanner' || req.user.role == 'manager')) {
+            if (req.user && (req.user.role == 'scanner' || req.user.role == 'manager' || req.user.role == 'admin')) {
                 next();
             } else {
                 res.status(403).json('No scanner permission.');
@@ -26,10 +26,19 @@ module.exports = jwtController = {
     },
     verifyManager: async(req, res, next) => {
         jwtController.verifyRunner(req, res, () => {
-            if (req.user && req.user.role == 'manager') {
+            if (req.user && req.user.role == 'manager'|| req.user.role == 'admin') {
                 next();
             } else {
                 res.status(403).json('No manager permission.');
+            }
+        });
+    },
+    verifyAdmin: async(req, res, next) => {
+        jwtController.verifyRunner(req, res, () => {
+            if (req.user && req.user.role == 'admin') {
+                next();
+            } else {
+                res.status(403).json('No admin permission.');
             }
         });
     }

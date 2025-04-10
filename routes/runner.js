@@ -7,6 +7,6 @@ router.get('/runner/:runnerId', jwtController.verifyScanner, runnerController.ge
 router.get('/runner/generate/QR', jwtController.verifyRunner, runnerController.generateQR);
 router.get('/runner/export/excel', jwtController.verifyManager, runnerController.exportExcel);
 router.post('/runner/scanQR', jwtController.verifyScanner, runnerController.scanQR);
-router.put('/runner/reset', jwtController.verifyManager, runnerController.reset);
+router.put('/runner/reset', jwtController.verifyAdmin, runnerController.reset);
 
 module.exports = router;
