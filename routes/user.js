@@ -5,6 +5,7 @@ const jwtController = require('../controllers/jwtController');
 router.get('/user', jwtController.verifyManager, userController.getAll);
 router.get('/user/scan', jwtController.verifyManager, userController.getScan);
 router.get('/user/scanned/:userId', jwtController.verifyScanner, userController.getScanned);
+router.post('/user', jwtController.verifyManager, userController.createAll);
 router.post('/user/register', jwtController.verifyManager, userController.registerUser);
 router.post('/user/login', userController.loginUser);
 router.put('/user/passwordManager', jwtController.verifyManager, userController.updatePasswordManager);

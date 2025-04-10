@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Scan = require('../models/Scan');
 const Scanned = require('../models/Scanned');
+const Runner = require('../models/Runner');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -29,6 +30,27 @@ module.exports = userController = {
                 return res.status(404).json('No scanned history.');
             }
             res.status(200).json(scanned);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+    createAll: async(req, res) => {
+        try {
+            const runners = await Runner.find();
+            const hashed = await bcrypt.hash(process.env.USER_PASSWORD, await bcrypt.genSalt(10))
+            const promise = runners.map(async (runner) => {
+                const checkUser = await User.findOne({ username: runner.ordinalNumber });
+                if (checkUser) {
+                    return null;
+                }
+                const user = new User({
+                    username: runner.ordinalNumber,
+                    password: hashed
+                });
+                return user.save();   
+            });
+            await Promise.all(promise);
+            res.status(201).json('Users created from runners.');
         } catch (err) {
             res.status(500).json(err);
         }
