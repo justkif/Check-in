@@ -1,5 +1,6 @@
 const Runner = require('../models/Runner');
 const qrCode = require('qrcode');
+const excel =  require('exceljs');
 
 module.exports = runnerController = {
     getAll: async(req, res) => {
@@ -39,7 +40,26 @@ module.exports = runnerController = {
     },
     exportExcel: async(req, res) => {
         try {
-
+            const runners = await Runner.find();
+            const workbook = new excel.Workbook();
+            const worksheet = workbook.addWorksheet('Runner');
+            worksheet.columns = [
+                { header: 'ordinalNumber', key: 'ordinalNumber', width: 15 },
+                { header: 'fullName', key: 'fullName', width: 25 },
+                { header: 'gender', key: 'gender', width: 10 },
+                { header: 'area', key: 'area', width: 10 },
+                { header: 'isPresent', key: 'isPresent', width: 10},
+                { header: 'timePresent', key: 'timePresent', width: 20},
+                { header: 'whoScan', key: 'whoScan', width: 25},
+                { header: 'imageLink', key: 'imageLink', width: 30}
+            ];
+            runners.forEach(runner => {
+                worksheet.addRow(runner.toObject());
+            });
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.setHeader('Content-Disposition', 'attachment; filename=Runner.xlsx');
+            await workbook.xlsx.write(res);
+            res.end();
         } catch (err) {
             res.status(500).json(err);
         }
