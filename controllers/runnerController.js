@@ -105,7 +105,16 @@ module.exports = runnerController = {
     },
     reset: async(req, res) => {
         try {
-            
+            await Runner.updateMany(
+                {}, 
+                { 
+                    isPresent: false,
+                    timePresent: null,
+                    whoScan: null
+                }
+            );
+            await Scanned.deleteMany({});
+            res.status(200).json('Reseted.');
         } catch (err) {
             res.status(500).json(err);
         }
