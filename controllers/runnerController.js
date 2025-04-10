@@ -1,6 +1,9 @@
 const Runner = require('../models/Runner');
+const Scan = require('../models/Scan');
+const Scanned = require('../models/Scanned');
 const qrCode = require('qrcode');
 const excel =  require('exceljs');
+const jwt = require('jsonwebtoken');
 
 module.exports = runnerController = {
     getAll: async(req, res) => {
@@ -66,7 +69,36 @@ module.exports = runnerController = {
     },
     scanQR: async(req, res) => {
         try {
-
+            const scan = await Scan.findOne();
+            if (!scan.isScan) {
+                return res.status(403).json('Scanning is temporary turned off by the manager.');
+            }
+            const runner = await Runner.findById(req.body.runnerId);
+            if (!runner) {
+                return res.status(404).json('Runner not found.');
+            }
+            if (runner.isPresent) {
+                return res.status(200).json('Runner is already scanned.');
+            }
+            const decoded = jwt.verify(req.headers.token, process.env.JWT_KEY);
+            const scannedRunner = await Runner.findByIdAndUpdate(
+                req.body.runnerId,
+                {
+                    isPresent: true,
+                    timePresent: new Date(),
+                    whoScan: decoded.username
+                },
+                { new: true }
+            );
+            await Scanned.findByIdAndUpdate(
+                decoded.id,
+                { $push: { scanned: req.body.runnerId } },
+                {
+                    upsert: true,
+                    setDefaultsOnInsert: true
+                }
+            );
+            res.status(200).json(scannedRunner);
         } catch (err) {
             res.status(500).json(err);
         }
