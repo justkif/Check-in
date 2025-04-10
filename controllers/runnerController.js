@@ -27,7 +27,8 @@ module.exports = runnerController = {
     },
     generateQR: async(req, res) => {
         try {
-            const runner = await Runner.findOne({ ordinalNumber: req.params.username });
+            const decoded = jwt.verify(req.headers.token, process.env.JWT_KEY);
+            const runner = await Runner.findOne({ ordinalNumber: decoded.username });
             if (!runner) {
                 return res.status(404).json('Runner not found.');
             }
