@@ -139,7 +139,10 @@ module.exports = userController = {
             const user = await User.findOneAndUpdate(
                 { username: req.body.username },
                 { role: req.body.role },
-                { new: true }
+                { 
+                    new: true,
+                    runValidators: true
+                }
             );
             if (!user) {
                 return res.status(404).json('User not found.');

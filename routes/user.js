@@ -8,7 +8,7 @@ router.get('/user/scanned/:userId', jwtController.verifyScanner, userController.
 router.post('/user', jwtController.verifyAdmin, userController.createAll);
 router.post('/user/register', jwtController.verifyAdmin, userController.registerUser);
 router.post('/user/login', userController.loginUser);
-router.put('/user/passwordManager', jwtController.verifyAdmin, userController.updatePasswordAdmin);
+router.put('/user/passwordAdmin', jwtController.verifyAdmin, userController.updatePasswordAdmin);
 router.put('/user/password', jwtController.verifyRunner, userController.updatePassword);
 router.put('/user/role', jwtController.verifyAdmin, userController.updateRole);
 router.put('/user/scan', jwtController.verifyAdmin, userController.updateScan);
